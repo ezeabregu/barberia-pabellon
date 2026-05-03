@@ -45,6 +45,25 @@ export const HomeContainer = styled.div`
     line-height: 1.7;
     font-weight: 300;
   }
+
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem 3rem;
+
+    h1 {
+      font-size: 2.2rem;
+      max-width: 100%;
+    }
+
+    p {
+      font-size: 0.95rem;
+      max-width: 100%;
+    }
+
+    &::before {
+      width: 350px;
+      height: 250px;
+    }
+  }
 `;
 
 export const ImageContainer = styled.div`
@@ -58,6 +77,12 @@ export const ImageContainer = styled.div`
     width: auto;
     border-radius: 50%;
   }
+
+  @media (max-width: 768px) {
+    img {
+      height: 200px;
+    }
+  }
 `;
 
 export const HeroCta = styled.div`
@@ -65,6 +90,17 @@ export const HeroCta = styled.div`
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+
+    a,
+    button {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
 `;
 
 export const HeroTag = styled.div`
@@ -77,6 +113,12 @@ export const HeroTag = styled.div`
   padding: 0.4rem 1.2rem;
   border-radius: 50px;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    padding: 0.3rem 1rem;
+  }
 `;
 
 export const ButtonPrimary = styled(Link)`
@@ -97,6 +139,13 @@ export const ButtonPrimary = styled(Link)`
     background: var(--gold-light);
     transform: translateY(-1px);
   }
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.8rem;
+    width: 100%;
+    max-width: 280px;
+  }
 `;
 
 export const ButtonOutline = styled.button`
@@ -116,6 +165,13 @@ export const ButtonOutline = styled.button`
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.05);
   }
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.8rem;
+    width: 100%;
+    max-width: 280px;
+  }
 `;
 
 export const Divider = styled.div`
@@ -124,12 +180,20 @@ export const Divider = styled.div`
   background: var(--gold);
   margin: 3rem auto;
   opacity: 0.5;
+
+  @media (max-width: 768px) {
+    margin: 2rem auto;
+  }
 `;
 
 export const Section = styled.div`
   padding: 3rem 2rem;
   max-width: 900px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
 `;
 
 export const SectionTitle = styled.div`
@@ -137,6 +201,10 @@ export const SectionTitle = styled.div`
   font-size: 2rem;
   text-align: center;
   margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
 `;
 
 export const SectionSub = styled.div`
@@ -146,12 +214,21 @@ export const SectionSub = styled.div`
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 2.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+  }
 `;
 
 export const ServicesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ServiceCard = styled(Link)`
@@ -194,6 +271,10 @@ export const ServiceCard = styled(Link)`
   .selected::after {
     transform: scaleX(1);
   }
+
+  @media (max-width: 768px) {
+    padding: 1.2rem;
+  }
 `;
 
 export const ServiceIcon = styled.div`
@@ -205,16 +286,28 @@ export const ServiceName = styled.div`
   font-family: "Playfair Display", serif;
   font-size: 1rem;
   margin-bottom: 0.3rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
 `;
 
 export const ServicePrice = styled.div`
   color: var(--gold);
   font-size: 1.2rem;
   font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 export const ServiceTime = styled.div`
   color: var(--text-muted);
   font-size: 0.8rem;
   margin-top: 0.2rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
