@@ -8,4 +8,11 @@ export const FooterContainer = styled.div`
   border-top: 1px solid var(--border);
   background: rgba(15, 13, 11, 0.95);
   backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    padding: 1rem 1.2rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
 `;
