@@ -8,6 +8,10 @@ export const SectionContainer = styled.div`
   padding: 3rem 2rem;
   max-width: 900px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.2rem;
+  }
 `;
 
 export const SectionTitle = styled.div`
@@ -15,6 +19,10 @@ export const SectionTitle = styled.div`
   font-size: 2rem;
   text-align: center;
   margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
 `;
 
 export const SectionSub = styled.div`
@@ -24,6 +32,11 @@ export const SectionSub = styled.div`
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 2.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+  }
 `;
 
 export const BookingSection = styled.div`
@@ -33,12 +46,21 @@ export const BookingSection = styled.div`
   padding: 2.5rem;
   max-width: 760px;
   margin: 2rem auto;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
 `;
 
 export const BookingGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 /* STEPS */
@@ -112,6 +134,21 @@ export const Step = styled.div`
       color: var(--gold);
     }
   `}
+
+  @media (max-width: 768px) {
+    font-size: 0.6rem;
+    white-space: nowrap;
+
+    &::before {
+      width: 24px;
+      height: 24px;
+      font-size: 0.7rem;
+    }
+
+    &::after {
+      top: 12px;
+    }
+  }
 `;
 
 export const StepServicesContainer = styled.div`
@@ -142,6 +179,10 @@ export const ServicesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ServiceCard = styled.button`
@@ -207,6 +248,10 @@ export const ServiceCard = styled.button`
     border-color: var(--gold);
     box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.3);
   }
+
+  @media (max-width: 768px) {
+    padding: 1.2rem;
+  }
 `;
 
 export const ServiceIcon = styled.div`
@@ -218,18 +263,30 @@ export const ServiceName = styled.div`
   font-family: "Playfair Display", serif;
   font-size: 1rem;
   margin-bottom: 0.3rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
 `;
 
 export const ServicePrice = styled.div`
   color: var(--gold);
   font-size: 1.2rem;
   font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 export const ServiceTime = styled.div`
   color: var(--text-muted);
   font-size: 0.8rem;
   margin-top: 0.2rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
 
 export const ButtonPrimary = styled.button`
@@ -250,6 +307,12 @@ export const ButtonPrimary = styled.button`
   &:hover {
     background: var(--gold-light);
     transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -293,18 +356,35 @@ export const FormGroupContainer = styled.div`
   input::placeholder {
     color: var(--text-muted);
   }
+
+  @media (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 0.9rem;
+      padding: 0.7rem 0.9rem;
+    }
+  }
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const ButtonsStep3Container = styled.div`
   display: flex;
   gap: 1rem;
   margin-top: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const ButtonOutline = styled.button`
@@ -324,6 +404,12 @@ export const ButtonOutline = styled.button`
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.05);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
 `;
 
 export const TimeGridContainer = styled.div`
@@ -331,6 +417,10 @@ export const TimeGridContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
   margin-top: 0.3rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 export const TimeButton = styled.button`
@@ -367,6 +457,11 @@ export const TimeButton = styled.button`
       transform: translateY(-1px);
     }
   `}
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
 `;
 
 export const BookingSummaryContainer = styled.div`
@@ -375,6 +470,10 @@ export const BookingSummaryContainer = styled.div`
   border-radius: 8px;
   padding: 1.2rem;
   margin: 1.5rem 0;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 export const SummaryRowContainer = styled.div`
@@ -382,6 +481,10 @@ export const SummaryRowContainer = styled.div`
   justify-content: space-between;
   font-size: 0.9rem;
   padding: 0.3rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
 
 export const SpanVal = styled.span`
@@ -398,6 +501,10 @@ export const SummaryRowTotalContainer = styled.div`
   padding-top: 0.8rem;
   font-family: "Playfair Display", serif;
   font-size: 1.1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
 
 export const ButtonWhastapp = styled.button`
@@ -423,6 +530,12 @@ export const ButtonWhastapp = styled.button`
     filter: brightness(1.1);
     transform: translateY(-1px);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
 `;
 
 export const WhatsappIcon = styled.svg`
@@ -445,6 +558,18 @@ export const SuccessStateContainer = styled.div`
     font-size: 0.9rem;
     line-height: 1.7;
   }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+  }
 `;
 
 export const SuccessIconContainer = styled.div`
@@ -457,4 +582,10 @@ export const SuccessIconContainer = styled.div`
   justify-content: center;
   margin: 0 auto 1.2rem;
   font-size: 1.8rem;
+
+  @media (max-width: 768px) {
+    width: 54px;
+    height: 54px;
+    font-size: 1.5rem;
+  }
 `;
