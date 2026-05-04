@@ -63,6 +63,27 @@ export const LogoContainer = styled.div`
   }
 `;
 
+export const DesktopNavLinks = styled(RouterNavLink)`
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    color: var(--gold);
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 export const NavLinks = styled.ul`
   display: flex;
   flex-direction: column;
@@ -72,6 +93,12 @@ export const NavLinks = styled.ul`
 
   li {
     list-style: none;
+  }
+
+  @media (min-width: 769px) {
+    flex-direction: row;
+    gap: 2rem;
+    text-align: left;
   }
 `;
 
@@ -96,6 +123,29 @@ export const ButtonReserve = styled(Link)`
   @media (max-width: 768px) {
     padding: 0.45rem 1rem;
     font-size: 0.7rem;
+  }
+`;
+
+export const ButtonReserveDesktop = styled(Link)`
+  background: var(--gold);
+  color: var(--dark);
+  padding: 0.55rem 1.4rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--gold-light);
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -153,6 +203,32 @@ export const HamburgerButton = styled.button`
   }
 `;
 
+// export const OverlayMenu = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   height: 100vh;
+//   width: 100%;
+//   background: rgba(15, 13, 11, 0.98);
+//   backdrop-filter: blur(12px);
+
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   gap: 2rem;
+
+//   transform: ${({ $open }) => ($open ? "translateY(0)" : "translateY(-100%)")};
+//   opacity: ${({ $open }) => ($open ? "1" : "0")};
+
+//   transition: all 0.4s ease;
+//   z-index: 200;
+
+//   @media (min-width: 769px) {
+//     display: none;
+//   }
+// `;
+
 export const OverlayMenu = styled.div`
   position: fixed;
   top: 0;
@@ -169,7 +245,9 @@ export const OverlayMenu = styled.div`
   gap: 2rem;
 
   transform: ${({ $open }) => ($open ? "translateY(0)" : "translateY(-100%)")};
+
   opacity: ${({ $open }) => ($open ? "1" : "0")};
+  pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
 
   transition: all 0.4s ease;
   z-index: 200;
