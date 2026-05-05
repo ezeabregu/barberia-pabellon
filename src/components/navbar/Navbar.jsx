@@ -35,6 +35,7 @@ const Navbar = () => {
           Inicio
         </DesktopNavLinks>
         <DesktopNavLinks to="/turno">Turnos</DesktopNavLinks>
+        <DesktopNavLinks to="/admin">Admin</DesktopNavLinks>
         <ButtonReserveDesktop to="/turno">Reservar Turno</ButtonReserveDesktop>
       </NavLinks>
 
@@ -56,10 +57,11 @@ const Navbar = () => {
               Turnos
             </NavLink>
           </li>
-          {/* <li>
-           onClick="showAdminLogin()"
-          <NavLink to="/turno">Admin</NavLink>
-        </li> */}
+          <li>
+            <NavLink to="/admin" onClick={() => setMenuOpen(false)}>
+              Admin
+            </NavLink>
+          </li>
         </NavLinks>
         <ButtonReserve to="/turno" onClick={() => setMenuOpen(false)}>
           Reservar Turno

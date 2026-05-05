@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useModal } from "../../components/modal/useModal";
 import {
   TurnoContainer,
   SectionContainer,
@@ -45,6 +46,7 @@ const Turno = () => {
   const [apellido, setApellido] = useState("");
   const [telefono, setTelefono] = useState("");
   const [notas, setNotas] = useState("");
+  const { mostrarModal, ModalComponent } = useModal();
 
   const times = [
     "09:00",
@@ -100,7 +102,7 @@ const Turno = () => {
 
   const goToStep2 = () => {
     if (!selectedService) {
-      alert("Por favor elegí un servicio");
+      mostrarModal("Por favor elegí un servicio");
       return;
     }
 
@@ -119,7 +121,7 @@ const Turno = () => {
 
   const goToStep3 = () => {
     if (!selectedTime) {
-      alert("Por favor elegí un horario");
+      mostrarModal("Por favor elegí un horario");
       return;
     }
 
@@ -140,7 +142,7 @@ const Turno = () => {
 
   const sendWhatsApp = () => {
     if (!nombre.trim() || !telefono.trim()) {
-      alert("Por favor completá nombre y WhatsApp");
+      mostrarModal("Por favor completá nombre y WhatsApp");
       return;
     }
 
@@ -187,7 +189,7 @@ const Turno = () => {
             <Step data-num="2" $active={step === 2} $done={step > 2}>
               Fecha y Hora
             </Step>
-            <Step data-num="3" $active={step === 3}>
+            <Step data-num="3" $active={step === 3} $done={step > 3}>
               Tus Datos
             </Step>
           </Steps>
@@ -428,6 +430,7 @@ const Turno = () => {
           )}
         </BookingSection>
       </SectionContainer>
+      {ModalComponent}
     </TurnoContainer>
   );
 };
