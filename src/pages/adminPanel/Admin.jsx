@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useModal } from "../../components/modal/useModal";
+import { api, tokenStorage } from "../../lib/api";
 import {
   AdminContainer,
   Section,
@@ -28,56 +29,65 @@ import {
   AdminFooterNote,
 } from "./adminStyles";
 
-const ADMIN_PASS = "1234";
-
-const initialBookings = [
-  {
-    nombre: "Carlos Pérez",
-    servicio: "Corte + Barba",
-    hora: "09:00",
-    barbero: "Nahuel",
-    precio: "$5.500",
-    estado: "confirmed",
-    tel: "5493510001111",
-  },
-  {
-    nombre: "Tomás García",
-    servicio: "Degradado",
-    hora: "09:50",
-    barbero: "Tomás",
-    precio: "$4.000",
-    estado: "new",
-    tel: "5493510002222",
-  },
-  {
-    nombre: "Nico Rodríguez",
-    servicio: "Corte Clásico",
-    hora: "10:30",
-    barbero: "Facundo",
-    precio: "$3.500",
-    estado: "new",
-    tel: "5493510003333",
-  },
-];
+const formatTodayISO = () => {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+};
 
 const Admin = () => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(() =>
+    Boolean(tokenStorage.get()),
+  );
   const [pass, setPass] = useState("");
-  const [bookings] = useState(initialBookings);
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [bookings, setBookings] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(false);
   const { mostrarModal, ModalComponent } = useModal();
 
-  const today = new Date().toLocaleDateString("es-AR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const todayISO = useMemo(() => formatTodayISO(), []);
+  const todayLabel = useMemo(
+    () =>
+      new Date().toLocaleDateString("es-AR", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+    [],
+  );
+
+  const fetchBookings = useCallback(async () => {
+    setLoadingBookings(true);
+    try {
+      const data = await api.getBookings({ fecha: todayISO });
+      setBookings(data.items || []);
+    } catch (err) {
+      if (err.status === 401) {
+        tokenStorage.clear();
+        setAuthenticated(false);
+        mostrarModal("Sesión expirada, ingresá de nuevo");
+      } else {
+        mostrarModal(err.message || "No se pudieron cargar los turnos");
+      }
+    } finally {
+      setLoadingBookings(false);
+    }
+  }, [todayISO, mostrarModal]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (tokenStorage.get()) fetchBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const stats = useMemo(() => {
     const total = bookings.length;
     const nuevos = bookings.filter((b) => b.estado === "new").length;
     const ingresos = bookings.reduce(
-      (sum, b) => sum + parseInt(b.precio.replace(/\D/g, ""), 10),
+      (sum, b) => sum + parseInt(String(b.precio).replace(/\D/g, ""), 10) || 0,
       0,
     );
     return {
@@ -87,25 +97,47 @@ const Admin = () => {
     };
   }, [bookings]);
 
-  const checkAdmin = () => {
-    if (pass === ADMIN_PASS) {
+  const checkAdmin = async () => {
+    if (!pass) return;
+    setLoggingIn(true);
+    try {
+      const { token } = await api.loginAdmin(pass);
+      tokenStorage.set(token);
       setAuthenticated(true);
-    } else {
-      mostrarModal("Contraseña incorrecta");
+      setPass("");
+      fetchBookings();
+    } catch (err) {
+      mostrarModal(err.message || "Error al ingresar");
+    } finally {
+      setLoggingIn(false);
     }
   };
 
   const logout = () => {
+    tokenStorage.clear();
     setAuthenticated(false);
-    setPass("");
+    setBookings([]);
   };
 
-  const notifyClient = (nombre, hora, tel) => {
-    const msg = `Hola ${nombre}! ✂ Te confirmo tu turno en *Barbería Pabellón* para las *${hora}hs* de hoy. ¡Te esperamos!`;
+  const notifyClient = async (booking) => {
+    const msg = `Hola ${booking.nombre}! ✂ Te confirmo tu turno en *Barbería Pabellón* para las *${booking.hora}hs* de hoy. ¡Te esperamos!`;
     window.open(
-      `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/${booking.telefono}?text=${encodeURIComponent(msg)}`,
       "_blank",
     );
+
+    if (booking.estado === "new") {
+      try {
+        const updated = await api.updateBookingStatus(booking._id, "confirmed");
+        setBookings((curr) =>
+          curr.map((b) => (b._id === booking._id ? updated : b)),
+        );
+      } catch {
+        mostrarModal(
+          "Se abrió WhatsApp pero no se pudo marcar el turno como confirmado",
+        );
+      }
+    }
   };
 
   return (
@@ -122,15 +154,18 @@ const Admin = () => {
               value={pass}
               onChange={(e) => setPass(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && checkAdmin()}
+              disabled={loggingIn}
             />
-            <ButtonPrimary onClick={checkAdmin}>Ingresar</ButtonPrimary>
+            <ButtonPrimary onClick={checkAdmin} disabled={loggingIn}>
+              {loggingIn ? "Ingresando..." : "Ingresar"}
+            </ButtonPrimary>
           </LoginCard>
         ) : (
           <AdminSection>
             <AdminHeader>
               <AdminHeaderLeft>
                 <AdminTitle>Turnos del Día</AdminTitle>
-                <AdminDateLabel>{today}</AdminDateLabel>
+                <AdminDateLabel>{todayLabel}</AdminDateLabel>
               </AdminHeaderLeft>
               <AdminHeaderRight>
                 <AdminBadge>Admin</AdminBadge>
@@ -166,35 +201,46 @@ const Admin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {bookings.map((b) => (
-                    <tr key={b.tel}>
-                      <td className="cliente">{b.nombre}</td>
-                      <td>{b.servicio}</td>
-                      <td className="hora">{b.hora}hs</td>
-                      <td>{b.barbero}</td>
-                      <td>
-                        <StatusBadge $estado={b.estado}>
-                          {b.estado === "new" ? "Nuevo" : "Confirmado"}
-                        </StatusBadge>
-                      </td>
-                      <td>
-                        <ButtonSendWa
-                          onClick={() =>
-                            notifyClient(b.nombre, b.hora, b.tel)
-                          }
-                        >
-                          📲 Notificar
-                        </ButtonSendWa>
+                  {loadingBookings ? (
+                    <tr>
+                      <td colSpan={6} style={{ textAlign: "center", padding: "1.5rem", color: "var(--text-muted)" }}>
+                        Cargando turnos...
                       </td>
                     </tr>
-                  ))}
+                  ) : bookings.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} style={{ textAlign: "center", padding: "1.5rem", color: "var(--text-muted)" }}>
+                        No hay turnos para hoy
+                      </td>
+                    </tr>
+                  ) : (
+                    bookings.map((b) => (
+                      <tr key={b._id}>
+                        <td className="cliente">
+                          {b.nombre} {b.apellido}
+                        </td>
+                        <td>{b.servicio}</td>
+                        <td className="hora">{b.hora}hs</td>
+                        <td>{b.barbero}</td>
+                        <td>
+                          <StatusBadge $estado={b.estado}>
+                            {b.estado === "new" ? "Nuevo" : "Confirmado"}
+                          </StatusBadge>
+                        </td>
+                        <td>
+                          <ButtonSendWa onClick={() => notifyClient(b)}>
+                            📲 Notificar
+                          </ButtonSendWa>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </BookingsTable>
             </TableWrapper>
 
             <AdminFooterNote>
-              Los turnos aquí son de demostración. Con backend, todos los
-              turnos se guardarían en la base de datos.
+              Los turnos se actualizan en tiempo real desde la base de datos.
             </AdminFooterNote>
           </AdminSection>
         )}

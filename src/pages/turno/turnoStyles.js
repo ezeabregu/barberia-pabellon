@@ -531,6 +531,13 @@ export const ButtonWhastapp = styled.button`
     transform: translateY(-1px);
   }
 
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+
   @media (max-width: 768px) {
     width: 100%;
     padding: 0.8rem;
