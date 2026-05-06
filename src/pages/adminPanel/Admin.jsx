@@ -119,11 +119,15 @@ const Admin = () => {
   };
 
   const notifyClient = async (booking) => {
+    const phone = String(booking.telefono || "").replace(/\D/g, "");
+    if (!phone) {
+      mostrarModal("El turno no tiene un teléfono válido");
+      return;
+    }
+
     const msg = `Hola ${booking.nombre}! ✂ Te confirmo tu turno en *Barbería Pabellón* para las *${booking.hora}hs* de hoy. ¡Te esperamos!`;
-    window.open(
-      `https://wa.me/${booking.telefono}?text=${encodeURIComponent(msg)}`,
-      "_blank",
-    );
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
 
     if (booking.estado === "new") {
       try {

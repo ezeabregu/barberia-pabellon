@@ -148,6 +148,8 @@ const Turno = () => {
       return;
     }
 
+    const waWindow = window.open("about:blank", "_blank");
+
     setSubmitting(true);
     try {
       await api.createBooking({
@@ -170,25 +172,29 @@ const Turno = () => {
 
       const msg = `💈 *Barbería Pabellón*
 
-        Hola! Quiero reservar un turno 👇
+Hola! Quiero reservar un turno 👇
 
-        👤 *Cliente:* ${nombre} ${apellido}
-        📱 *Tel:* ${telefono}
+👤 *Cliente:* ${nombre} ${apellido}
+📱 *Tel:* ${telefono}
 
-        ✂ *Servicio:* ${selectedService?.name}
-        💰 *Precio:* ${selectedService?.price}
+✂ *Servicio:* ${selectedService?.name}
+💰 *Precio:* ${selectedService?.price}
 
-        📅 *Fecha:* ${formatDateLocal(fecha)}
-        ⏰ *Hora:* ${selectedTime}hs
-        👨‍🔧 *Barbero:* ${barbero}
-
-        ${notas ? `📝 *Notas:* ${notas}\n\n` : ""}
-        Gracias! 🙌`;
+📅 *Fecha:* ${formatDateLocal(fecha)}
+⏰ *Hora:* ${selectedTime}hs
+👨‍🔧 *Barbero:* ${barbero}
+${notas ? `\n📝 *Notas:* ${notas}\n` : ""}
+Gracias! 🙌`;
 
       const url = `https://wa.me/5493513931888?text=${encodeURIComponent(msg)}`;
-      window.open(url, "_blank");
+      if (waWindow && !waWindow.closed) {
+        waWindow.location.href = url;
+      } else {
+        window.location.href = url;
+      }
       setStep(4);
     } catch (err) {
+      if (waWindow && !waWindow.closed) waWindow.close();
       mostrarModal(
         err.message || "No se pudo guardar el turno. Intentá de nuevo.",
       );
