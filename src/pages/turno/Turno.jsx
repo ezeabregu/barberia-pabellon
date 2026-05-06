@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useModal } from "../../components/modal/useModal";
 import { api } from "../../lib/api";
+import { normalizeArPhone } from "../../lib/phone";
 import {
   TurnoContainer,
   SectionContainer,
@@ -148,6 +149,14 @@ const Turno = () => {
       return;
     }
 
+    const normalizedPhone = normalizeArPhone(telefono);
+    if (!normalizedPhone) {
+      mostrarModal(
+        "El WhatsApp debe incluir el código de área. Ej: 351 558 5216 o +54 9 351 558 5216",
+      );
+      return;
+    }
+
     const waWindow = window.open("about:blank", "_blank");
 
     setSubmitting(true);
@@ -155,7 +164,7 @@ const Turno = () => {
       await api.createBooking({
         nombre: nombre.trim(),
         apellido: apellido.trim(),
-        telefono: telefono.trim(),
+        telefono: normalizedPhone,
         servicio: selectedService.name,
         precio: selectedService.price,
         duracion: selectedService.duration,
@@ -381,7 +390,7 @@ Gracias! 🙌`;
                   <input
                     type="tel"
                     id="telefono"
-                    placeholder="+54 9 351 000 0000"
+                    placeholder="351 558 5216 (con código de área)"
                     value={telefono}
                     onChange={(e) => setTelefono(e.target.value)}
                   />

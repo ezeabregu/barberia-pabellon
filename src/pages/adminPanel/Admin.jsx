@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useModal } from "../../components/modal/useModal";
 import { api, tokenStorage } from "../../lib/api";
+import { normalizeArPhone } from "../../lib/phone";
 import {
   AdminContainer,
   Section,
@@ -119,7 +120,9 @@ const Admin = () => {
   };
 
   const notifyClient = async (booking) => {
-    const phone = String(booking.telefono || "").replace(/\D/g, "");
+    const phone =
+      normalizeArPhone(booking.telefono) ||
+      String(booking.telefono || "").replace(/\D/g, "");
     if (!phone) {
       mostrarModal("El turno no tiene un teléfono válido");
       return;
