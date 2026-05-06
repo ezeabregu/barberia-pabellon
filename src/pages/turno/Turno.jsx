@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "../../components/modal/useModal";
 import { api } from "../../lib/api";
 import { normalizeArPhone } from "../../lib/phone";
@@ -69,7 +69,29 @@ const Turno = () => {
     "18:00",
     "18:30",
   ];
-  const takenTimes = [];
+  const [takenTimes, setTakenTimes] = useState([]);
+  const [loadingAvailability, setLoadingAvailability] = useState(false);
+
+  useEffect(() => {
+    if (!fecha) return;
+    let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoadingAvailability(true);
+    api
+      .getAvailability(fecha)
+      .then((data) => {
+        if (!cancelled) setTakenTimes(data.taken || []);
+      })
+      .catch(() => {
+        if (!cancelled) setTakenTimes([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingAvailability(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [fecha]);
 
   const getToday = () => {
     const today = new Date();
@@ -204,9 +226,18 @@ Gracias! 🙌`;
       setStep(4);
     } catch (err) {
       if (waWindow && !waWindow.closed) waWindow.close();
-      mostrarModal(
-        err.message || "No se pudo guardar el turno. Intentá de nuevo.",
-      );
+      if (err.status === 409) {
+        setTakenTimes((curr) =>
+          curr.includes(selectedTime) ? curr : [...curr, selectedTime],
+        );
+        setSelectedTime(null);
+        setStep(2);
+        mostrarModal("Ese horario se acaba de reservar. Elegí otro, por favor.");
+      } else {
+        mostrarModal(
+          err.message || "No se pudo guardar el turno. Intentá de nuevo.",
+        );
+      }
     } finally {
       setSubmitting(false);
     }
@@ -329,12 +360,15 @@ Gracias! 🙌`;
                 </FormGroupContainer>
               </BookingGrid>
               <FormGroupContainer style={{ marginTop: "1rem" }}>
-                <label>Horario disponible</label>
+                <label>
+                  Horario disponible
+                  {loadingAvailability && " (cargando...)"}
+                </label>
                 <TimeGridContainer id="time-grid" key={fecha}>
                   {times.map((t) => {
                     const isTaken = takenTimes.includes(t);
                     const isPast = isPastTime(t);
-                    const isDisabled = isTaken || isPast;
+                    const isDisabled = isTaken || isPast || loadingAvailability;
                     const isSelected = selectedTime === t;
 
                     return (

@@ -52,6 +52,15 @@ export default async function handler(req, res) {
       createdAt: new Date(),
     };
 
+    const conflict = await collection.findOne({
+      fecha: doc.fecha,
+      hora: doc.hora,
+      estado: { $ne: "cancelled" },
+    });
+    if (conflict) {
+      return res.status(409).json({ error: "Ese horario ya está reservado" });
+    }
+
     const result = await collection.insertOne(doc);
     return res.status(201).json({ id: result.insertedId, ...doc });
   }

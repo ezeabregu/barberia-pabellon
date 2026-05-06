@@ -52,6 +52,7 @@ export const api = {
     request("/api/admin/login", { method: "POST", body: { password } }),
   createBooking: (booking) =>
     request("/api/bookings", { method: "POST", body: booking }),
+  getAvailability: (fecha) => request("/api/availability", { query: { fecha } }),
   getBookings: (query) => request("/api/bookings", { auth: true, query }),
   updateBookingStatus: (id, estado) =>
     request(`/api/bookings/${id}`, {
