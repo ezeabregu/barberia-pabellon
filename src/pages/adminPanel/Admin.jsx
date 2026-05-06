@@ -17,6 +17,7 @@ import {
   AdminHeaderRight,
   AdminTitle,
   AdminDateLabel,
+  AdminDateInput,
   AdminBadge,
   AdminStats,
   StatCard,
@@ -45,24 +46,24 @@ const Admin = () => {
   const [loggingIn, setLoggingIn] = useState(false);
   const [bookings, setBookings] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(() => formatTodayISO());
   const { mostrarModal, ModalComponent } = useModal();
 
-  const todayISO = useMemo(() => formatTodayISO(), []);
-  const todayLabel = useMemo(
-    () =>
-      new Date().toLocaleDateString("es-AR", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-    [],
-  );
+  const dateLabel = useMemo(() => {
+    if (!selectedDate) return "";
+    const [y, m, d] = selectedDate.split("-").map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString("es-AR", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }, [selectedDate]);
 
   const fetchBookings = useCallback(async () => {
     setLoadingBookings(true);
     try {
-      const data = await api.getBookings({ fecha: todayISO });
+      const data = await api.getBookings({ fecha: selectedDate });
       setBookings(data.items || []);
     } catch (err) {
       if (err.status === 401) {
@@ -75,13 +76,12 @@ const Admin = () => {
     } finally {
       setLoadingBookings(false);
     }
-  }, [todayISO, mostrarModal]);
+  }, [selectedDate, mostrarModal]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (tokenStorage.get()) fetchBookings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (authenticated) fetchBookings();
+  }, [authenticated, fetchBookings]);
 
   const stats = useMemo(() => {
     const total = bookings.length;
@@ -105,7 +105,6 @@ const Admin = () => {
       tokenStorage.set(token);
       setAuthenticated(true);
       setPass("");
-      fetchBookings();
     } catch (err) {
       mostrarModal(err.message || "Error al ingresar");
     } finally {
@@ -165,9 +164,14 @@ const Admin = () => {
             <AdminHeader>
               <AdminHeaderLeft>
                 <AdminTitle>Turnos del Día</AdminTitle>
-                <AdminDateLabel>{todayLabel}</AdminDateLabel>
+                <AdminDateLabel>{dateLabel}</AdminDateLabel>
               </AdminHeaderLeft>
               <AdminHeaderRight>
+                <AdminDateInput
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                />
                 <AdminBadge>Admin</AdminBadge>
                 <ButtonOutline onClick={logout}>Salir</ButtonOutline>
               </AdminHeaderRight>
@@ -210,7 +214,7 @@ const Admin = () => {
                   ) : bookings.length === 0 ? (
                     <tr>
                       <td colSpan={6} style={{ textAlign: "center", padding: "1.5rem", color: "var(--text-muted)" }}>
-                        No hay turnos para hoy
+                        No hay turnos para esta fecha
                       </td>
                     </tr>
                   ) : (
@@ -219,15 +223,17 @@ const Admin = () => {
                         <td className="cliente">
                           {b.nombre} {b.apellido}
                         </td>
-                        <td>{b.servicio}</td>
-                        <td className="hora">{b.hora}hs</td>
-                        <td>{b.barbero}</td>
-                        <td>
+                        <td data-label="Servicio">{b.servicio}</td>
+                        <td className="hora" data-label="Hora">
+                          {b.hora}hs
+                        </td>
+                        <td data-label="Barbero">{b.barbero}</td>
+                        <td data-label="Estado">
                           <StatusBadge $estado={b.estado}>
                             {b.estado === "new" ? "Nuevo" : "Confirmado"}
                           </StatusBadge>
                         </td>
-                        <td>
+                        <td className="action">
                           <ButtonSendWa onClick={() => notifyClient(b)}>
                             📲 Notificar
                           </ButtonSendWa>

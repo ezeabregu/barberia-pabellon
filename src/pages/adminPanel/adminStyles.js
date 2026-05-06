@@ -154,6 +154,12 @@ export const AdminHeader = styled.div`
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
 `;
 
 export const AdminHeaderLeft = styled.div`
@@ -165,6 +171,10 @@ export const AdminHeaderRight = styled.div`
   display: flex;
   gap: 0.8rem;
   align-items: center;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 export const AdminTitle = styled.div`
@@ -183,6 +193,34 @@ export const AdminDateLabel = styled.div`
   text-transform: capitalize;
 `;
 
+export const AdminDateInput = styled.input`
+  background: var(--dark3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  color: var(--text);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  color-scheme: dark;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgba(201, 168, 76, 0.6);
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(0.7) sepia(1) hue-rotate(15deg) saturate(2);
+    cursor: pointer;
+  }
+
+  @media (max-width: 600px) {
+    flex: 1;
+    min-width: 0;
+  }
+`;
+
 export const AdminBadge = styled.span`
   background: rgba(201, 168, 76, 0.1);
   border: 1px solid var(--border);
@@ -192,6 +230,10 @@ export const AdminBadge = styled.span`
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--gold);
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 `;
 
 export const AdminStats = styled.div`
@@ -201,7 +243,8 @@ export const AdminStats = styled.div`
   margin-bottom: 2rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
   }
 `;
 
@@ -211,6 +254,10 @@ export const StatCard = styled.div`
   border-radius: var(--radius);
   padding: 1.2rem;
   text-align: center;
+
+  @media (max-width: 600px) {
+    padding: 0.8rem 0.4rem;
+  }
 `;
 
 export const StatNum = styled.div`
@@ -221,6 +268,10 @@ export const StatNum = styled.div`
   @media (max-width: 768px) {
     font-size: 1.6rem;
   }
+
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const StatLabel = styled.div`
@@ -229,6 +280,11 @@ export const StatLabel = styled.div`
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-top: 0.2rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+  }
 `;
 
 /* TABLE */
@@ -271,6 +327,67 @@ export const BookingsTable = styled.table`
   td.hora {
     color: var(--gold);
   }
+
+  @media (max-width: 600px) {
+    min-width: 0;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+    }
+
+    tr {
+      display: block;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9rem 1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    tr:hover td {
+      background: transparent;
+    }
+
+    td {
+      display: block;
+      border: none;
+      padding: 0.35rem 0;
+      font-size: 0.88rem;
+    }
+
+    td.cliente {
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0 0 0.5rem 0;
+      margin-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+    }
+
+    td[data-label] {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    td[data-label]::before {
+      content: attr(data-label);
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    td.action {
+      padding: 0.7rem 0 0;
+      margin-top: 0.4rem;
+      border-top: 1px solid rgba(201, 168, 76, 0.06);
+    }
+  }
 `;
 
 export const StatusBadge = styled.span`
@@ -302,6 +419,12 @@ export const ButtonSendWa = styled.button`
 
   &:hover {
     background: rgba(37, 211, 102, 0.1);
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 0.55rem;
+    font-size: 0.85rem;
   }
 `;
 
