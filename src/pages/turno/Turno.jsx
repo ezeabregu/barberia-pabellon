@@ -270,53 +270,53 @@ Gracias! 🙌`;
                   onClick={() =>
                     setSelectedService({
                       name: "Corte Clásico",
-                      price: "$3.500",
-                      duration: "30 min",
+                      price: "$9.000",
+                      duration: "30 minutos",
                     })
                   }
                   $selected={selectedService?.name === "Corte Clásico"}
                 >
                   <ServiceIcon>✂</ServiceIcon>
                   <ServiceName>Corte Clásico</ServiceName>
-                  <ServicePrice>$3.500</ServicePrice>
-                  <ServiceTime>30 min</ServiceTime>
+                  <ServicePrice>$9.000</ServicePrice>
+                  <ServiceTime>30 minutos</ServiceTime>
                 </ServiceCard>
                 <ServiceCard
                   onClick={() =>
                     setSelectedService({
                       name: "Fade / Degradé",
-                      price: "$2.500",
-                      duration: "20 min",
+                      price: "$9.000",
+                      duration: "20 minutos",
                     })
                   }
                   $selected={selectedService?.name === "Fade / Degradé"}
                 >
                   <ServiceIcon>🪒</ServiceIcon>
                   <ServiceName>Fade / Degradé</ServiceName>
-                  <ServicePrice>$2.500</ServicePrice>
-                  <ServiceTime>20 min</ServiceTime>
+                  <ServicePrice>$9.000</ServicePrice>
+                  <ServiceTime>20 minutos</ServiceTime>
                 </ServiceCard>
                 <ServiceCard
                   onClick={() =>
                     setSelectedService({
-                      name: "Barba + perfilado",
-                      price: "$5.500",
-                      duration: "50 min",
+                      name: "Barba y perfilado",
+                      price: "$11.000",
+                      duration: "50 minutos",
                     })
                   }
-                  $selected={selectedService?.name === "Barba + perfilado"}
+                  $selected={selectedService?.name === "Barba y perfilado"}
                 >
                   <ServiceIcon>💈</ServiceIcon>
-                  <ServiceName>Barba + perfilado</ServiceName>
-                  <ServicePrice>$5.500</ServicePrice>
-                  <ServiceTime>50 min</ServiceTime>
+                  <ServiceName>Barba y perfilado</ServiceName>
+                  <ServicePrice>$11.000</ServicePrice>
+                  <ServiceTime>50 minutos</ServiceTime>
                 </ServiceCard>
                 <ServiceCard
                   onClick={() =>
                     setSelectedService({
                       name: "Afeitado",
                       price: "$4.000",
-                      duration: "40 min",
+                      duration: "40 minutos",
                     })
                   }
                   $selected={selectedService?.name === "Afeitado"}
@@ -324,7 +324,22 @@ Gracias! 🙌`;
                   <ServiceIcon>⚡</ServiceIcon>
                   <ServiceName>Afeitado</ServiceName>
                   <ServicePrice>$4.000</ServicePrice>
-                  <ServiceTime>40 min</ServiceTime>
+                  <ServiceTime>40 minutos</ServiceTime>
+                </ServiceCard>
+                <ServiceCard
+                  onClick={() =>
+                    setSelectedService({
+                      name: "Color",
+                      price: "$50.000",
+                      duration: "2/3 horas",
+                    })
+                  }
+                  $selected={selectedService?.name === "Color"}
+                >
+                  <ServiceIcon>⚡</ServiceIcon>
+                  <ServiceName>Color</ServiceName>
+                  <ServicePrice>$50.000</ServicePrice>
+                  <ServiceTime>2/3 horas</ServiceTime>
                 </ServiceCard>
               </ServicesGrid>
               <ButtonPrimary onClick={goToStep2}>Continuar →</ButtonPrimary>

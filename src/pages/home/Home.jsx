@@ -56,19 +56,19 @@ const Home = () => {
           <ServiceCard to="/turno">
             <ServiceIcon>✂</ServiceIcon>
             <ServiceName>Corte Clásico</ServiceName>
-            <ServicePrice>$3.500</ServicePrice>
+            <ServicePrice>$9.000</ServicePrice>
             <ServiceTime>30 minutos</ServiceTime>
           </ServiceCard>
           <ServiceCard to="/turno">
             <ServiceIcon>🪒</ServiceIcon>
             <ServiceName>Fade / Degradé</ServiceName>
-            <ServicePrice>$2.500</ServicePrice>
+            <ServicePrice>$9.000</ServicePrice>
             <ServiceTime>20 minutos</ServiceTime>
           </ServiceCard>
           <ServiceCard to="/turno">
             <ServiceIcon>💈</ServiceIcon>
             <ServiceName>Barba y perfilado</ServiceName>
-            <ServicePrice>$5.500</ServicePrice>
+            <ServicePrice>$11.000</ServicePrice>
             <ServiceTime>50 minutos</ServiceTime>
           </ServiceCard>
           <ServiceCard to="/turno">
@@ -76,6 +76,12 @@ const Home = () => {
             <ServiceName>Afeitado</ServiceName>
             <ServicePrice>$4.000</ServicePrice>
             <ServiceTime>40 minutos</ServiceTime>
+          </ServiceCard>
+          <ServiceCard to="/turno">
+            <ServiceIcon>🖌️</ServiceIcon>
+            <ServiceName>Color</ServiceName>
+            <ServicePrice>$50.000</ServicePrice>
+            <ServiceTime>2/3 horas</ServiceTime>
           </ServiceCard>
         </ServicesGrid>
       </Section>
