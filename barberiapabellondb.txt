@@ -1,0 +1,19 @@
+base de datos de barberia pabellon 
+
+ddbb mongo
+user
+ezeabreguea_db_user
+pass
+yN2pXyLIGakzw7Qx
+
+MONGODB_URI
+mongodb+srv://ezeabreguea_db_user:yN2pXyLIGakzw7Qx@clusterbarberiapabellon.btrredr.mongodb.net/?appName=ClusterBarberiaPabellon
+
+ADMIN_PASSWORD
+PabellonAdmin2026!
+
+DB_NAME
+ClusterBarberiaPabellon
+
+JWT_SECRET
+kF3zX8vQ...

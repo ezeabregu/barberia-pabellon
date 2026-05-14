@@ -52,22 +52,16 @@ const Turno = () => {
   const { mostrarModal, ModalComponent } = useModal();
 
   const times = [
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
     "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
+    "17:25",
+    "17:50",
+    "18:15",
+    "18:40",
+    "19:05",
+    "19:30",
+    "19:55",
+    "20:20",
+    "20:45",
   ];
   const [takenTimes, setTakenTimes] = useState([]);
   const [loadingAvailability, setLoadingAvailability] = useState(false);
@@ -232,7 +226,9 @@ Gracias! 🙌`;
         );
         setSelectedTime(null);
         setStep(2);
-        mostrarModal("Ese horario se acaba de reservar. Elegí otro, por favor.");
+        mostrarModal(
+          "Ese horario se acaba de reservar. Elegí otro, por favor.",
+        );
       } else {
         mostrarModal(
           err.message || "No se pudo guardar el turno. Intentá de nuevo.",
